@@ -5,9 +5,15 @@ if ('serviceWorker' in navigator) {
 }
 
 function updateStatus() {
-    document.getElementById('status').textContent = navigator.onLine ? 'You are online!' : 'You are offline!';
+    document.getElementById('status').textContent =
+        (navigator.onLine ? 'You are online!' : 'You are offline!') + ' js-1';
 }
 
 window.addEventListener('load', updateStatus);
 window.addEventListener('online', updateStatus);
 window.addEventListener('offline', updateStatus);
+
+navigator.serviceWorker.addEventListener('message', event => {
+    console.log('Message from Service Worker:', event.data.msg);
+    document.getElementById('swid').textContent = event.data.msg;
+});
