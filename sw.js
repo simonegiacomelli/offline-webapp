@@ -18,7 +18,7 @@ function sendText(msg) {
 
 
 self.addEventListener('activate', event => {
-    sendText("activate-1");
+    sendText("activate-2");
 });
 
 self.addEventListener('install', event => {

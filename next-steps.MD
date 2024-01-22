@@ -1,0 +1,3 @@
+- send messages from SW to main
+- study the cache lifecycle 
+- Chrome: what is the difference between 'normal reload', 'hard reload', 'clear cache and hard reload'?
