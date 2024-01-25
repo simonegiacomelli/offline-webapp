@@ -1,7 +1,6 @@
 const CACHE_NAME = 'v1';
 const URLS_TO_CACHE = [
     '/',
-    'index.html',
     'main.js'
 ];
 
@@ -16,6 +15,27 @@ function sendText(msg) {
     });
 }
 
+self.addEventListener('message', event => {
+    console.log('SW Message:', event.data.msg);
+    if (event.data.msg === 'refresh-cache') {
+        self.skipWaiting();
+        // clear cache and reload
+        caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => {
+                caches.delete(cacheName);
+            });
+        });
+
+        self.clients.matchAll().then(clients => {
+            clients.forEach(client => {
+                client.postMessage({
+                    msg: 'refresh-browser'
+                });
+            });
+        });
+
+    }
+});
 
 self.addEventListener('activate', event => {
     sendText("activate-2");
@@ -37,6 +57,7 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request)
             .then(response => {
+                console.log('fetch-1 ' + event.request.url);
                 // Cache hit - return response
                 if (response) {
                     return response;
