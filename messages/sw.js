@@ -1,7 +1,20 @@
+const version = '10';
+console.log(`sw-${version}`);
 
-console.log('sw-1');
+self.addEventListener('install', event => {
+    console.log(`install-${version}`);
+    // self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+    let data = `activate-${version}`;
+    console.log(data);
+    event.waitUntil( self.clients.claim() );
+    sendText(data);
+});
+
 function sendText(msg) {
-    console.log(msg);
+    console.log('sendText', msg);
     self.clients.matchAll().then(clients => {
         clients.forEach(client => {
             client.postMessage({
@@ -15,30 +28,6 @@ self.addEventListener('message', event => {
     console.log('SW Message:', event.data.msg);
     if (event.data.msg === 'refresh-cache') {
         self.skipWaiting();
-        // clear cache and reload
-
-        self.clients.matchAll().then(clients => {
-            clients.forEach(client => {
-                client.postMessage({
-                    msg: 'feedback-1'
-                });
-            });
-        });
-
+        sendText(`refresh-cache-feedback-${version}`)
     }
 });
-
-self.addEventListener('activate', event => {
-    let data = "activate-5";
-    console.log(data);
-    event.waitUntil( self.clients.claim() );
-    sendText(data);
-});
-
-self.addEventListener('install', event => {
-    console.log('install-2');
-});
-
-
-
-
