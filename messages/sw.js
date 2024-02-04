@@ -1,20 +1,25 @@
-const version = '10';
-console.log(`sw-${version}`);
+const version = '18';
+
+function log(...data) {
+    console.log(`sw-${version}`, ...data);
+}
+
+log(self);
 
 self.addEventListener('install', event => {
-    console.log(`install-${version}`);
+    log(`install`);
     // self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
-    let data = `activate-${version}`;
-    console.log(data);
-    event.waitUntil( self.clients.claim() );
+    let data = `activate`;
+    log(data);
+    event.waitUntil(self.clients.claim());
     sendText(data);
 });
 
 function sendText(msg) {
-    console.log('sendText', msg);
+    log('sendText', msg);
     self.clients.matchAll().then(clients => {
         clients.forEach(client => {
             client.postMessage({
@@ -25,8 +30,8 @@ function sendText(msg) {
 }
 
 self.addEventListener('message', event => {
-    console.log('SW Message:', event.data.msg);
-    if (event.data.msg === 'refresh-cache') {
+    log('SW Message:', event.data.msg);
+    if (event.data.msg === 'skip-waiting') {
         self.skipWaiting();
         sendText(`refresh-cache-feedback-${version}`)
     }

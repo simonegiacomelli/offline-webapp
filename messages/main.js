@@ -1,8 +1,22 @@
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').then(() => {
-        console.log('Service Worker Registered');
+console.log('main.js v-3');
+navigator.serviceWorker.register('sw.js').then(reg => {
+    console.log(`Service Worker Registered reg.scope=${reg.scope}  `);
+
+    reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        console.log('newWorker', newWorker);
+
+        newWorker.addEventListener('statechange', () => {
+            // newWorker.state has changed
+            console.log('newWorker.state', newWorker.state);
+            if(newWorker.state === 'installed'){
+                newWorker.postMessage({msg: 'skip-waiting'});
+            }
+        });
     });
-}
+
+
+});
 
 function updateStatus() {
     document.getElementById('status').textContent =
