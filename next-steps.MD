@@ -1,3 +1,6 @@
+- support for no-network scenarios
+  - access the right information about online/offline
+  - make evidence of the online/offline state
 - read https://web.dev/articles/service-worker-lifecycle
 - send messages from SW to main
 - study the cache lifecycle 
