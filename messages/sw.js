@@ -1,4 +1,4 @@
-const version = '18';
+const version = '28';
 
 function log(...data) {
     console.log(`sw-${version}`, ...data);

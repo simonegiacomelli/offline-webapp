@@ -1,22 +1,47 @@
-console.log('main.js v-3');
+const version = '4';
+
+function log(...data) {
+    console.log(`main-${version}`, ...data);
+}
+
+log('startup');
+
+
+let cbSkipWaiting = document.getElementById('cbSkipWaiting');
+cbSkipWaiting.checked = localStorage.getItem('skipWaiting') === 'true';
+cbSkipWaiting.addEventListener('click', () => {
+    localStorage.setItem('skipWaiting', cbSkipWaiting.checked);
+    log('cbSkipWaiting', cbSkipWaiting.checked);
+});
+
+document.getElementById('btnSkipWaiting').addEventListener('click', () => {
+
+    navigator.serviceWorker.getRegistration().then(reg => {
+        log('btnSkipWaiting loop', reg);
+        if (reg && reg.waiting) {
+            postSkipWaiting(reg.waiting);
+        }
+    });
+
+});
+
+function postSkipWaiting(worker) {
+    log('postSkipWaiting', worker);
+    worker.postMessage({msg: 'skip-waiting'});
+}
+
 navigator.serviceWorker.register('sw.js').then(reg => {
-    console.log(`Service Worker Registered reg.scope=${reg.scope}  `);
+    log(`Service Worker Registered reg.scope=${reg.scope}  `);
 
     reg.addEventListener('updatefound', () => {
         const newWorker = reg.installing;
-        console.log('newWorker', newWorker);
-
-        newWorker.addEventListener('statechange', () => {
-            // newWorker.state has changed
-            console.log('newWorker.state', newWorker.state);
-            if(newWorker.state === 'installed'){
-                newWorker.postMessage({msg: 'skip-waiting'});
-            }
-        });
+        log('newWorker', newWorker);
+        if (cbSkipWaiting.checked)
+            postSkipWaiting(newWorker);
     });
 
-
 });
+
 
 function updateStatus() {
     document.getElementById('status').textContent =
@@ -24,7 +49,7 @@ function updateStatus() {
 }
 
 navigator.serviceWorker.addEventListener('message', event => {
-    console.log('Browser mg:', event.data.msg);
+    log('message:', event.data.msg);
     document.getElementById('swid').textContent = event.data.msg;
     if (event.data.msg === 'refresh-browser') {
         // window.location.reload();
@@ -33,6 +58,6 @@ navigator.serviceWorker.addEventListener('message', event => {
 
 
 document.getElementById('idbtn').addEventListener('click', () => {
-    console.log('refresh');
+    log('refresh');
     navigator.serviceWorker.controller.postMessage({msg: 'refresh-cache'});
 });
