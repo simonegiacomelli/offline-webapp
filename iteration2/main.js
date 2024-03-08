@@ -1,11 +1,12 @@
-const version = '6';
+const version = '11';
 
 function log(...data) {
     console.log(`main-${version}`, ...data);
+    // convert ...data to a string
+    let str = data.reduce((acc, val) => acc + ' ' + val, '');
+    document.getElementById('taLog').value += `main-${version} ` + str + '\n';
+
 }
-
-log('startup');
-
 
 let cbSkipWaiting = document.getElementById('cbSkipWaiting');
 cbSkipWaiting.checked = localStorage.getItem('skipWaiting') === 'true';
@@ -50,19 +51,12 @@ function updateStatus() {
 
 navigator.serviceWorker.addEventListener('message', event => {
     log('message:', event.data.msg);
-
-    logLine(event.data.msg);
     document.getElementById('swid').textContent = event.data.msg;
     if (event.data.msg === 'refresh-browser') {
         // window.location.reload();
     }
 });
 
-
-function logLine(msg) {
-    document.getElementById('taLog').value += msg + '\n';
-}
-logLine('initLog');
 
 document.getElementById('idbtn').addEventListener('click', () => {
     log('refresh');

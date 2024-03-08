@@ -1,5 +1,5 @@
-const version = '7';
-const expectedCache = 'static-v5';
+const version = '10';
+const expectedCache = `static-v${version}`
 const URLS_TO_CACHE = [
     '/',
     '/index.html',
