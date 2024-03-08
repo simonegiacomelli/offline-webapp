@@ -1,4 +1,6 @@
 - support for no-network scenarios
+  - add a single tag with sw.js and main.js version and html version
+  - after skipWaiting reload the page (the cache is already tied to the sw-version)
   - access the right information about online/offline
   - make evidence of the online/offline state
 - read https://web.dev/articles/service-worker-lifecycle
