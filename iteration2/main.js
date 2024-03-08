@@ -1,4 +1,4 @@
-const version = '4';
+const version = '6';
 
 function log(...data) {
     console.log(`main-${version}`, ...data);
@@ -50,12 +50,19 @@ function updateStatus() {
 
 navigator.serviceWorker.addEventListener('message', event => {
     log('message:', event.data.msg);
+
+    logLine(event.data.msg);
     document.getElementById('swid').textContent = event.data.msg;
     if (event.data.msg === 'refresh-browser') {
         // window.location.reload();
     }
 });
 
+
+function logLine(msg) {
+    document.getElementById('taLog').value += msg + '\n';
+}
+logLine('initLog');
 
 document.getElementById('idbtn').addEventListener('click', () => {
     log('refresh');
