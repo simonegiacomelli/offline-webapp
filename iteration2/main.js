@@ -1,4 +1,4 @@
-const version = '3';
+const version = '5';
 
 document.getElementById('ver_main').innerHTML = version;
 
@@ -38,7 +38,12 @@ navigator.serviceWorker.register('sw.js').then(reg => {
 
     reg.addEventListener('updatefound', () => {
         const newWorker = reg.installing;
-        log('newWorker', newWorker);
+        log('updatefound', newWorker);
+        newWorker.addEventListener('statechange', () => {
+            log('statechange', newWorker.state);
+            if (newWorker.state === 'activated') // refresh the page
+                window.location.reload();
+        });
         if (cbSkipWaiting.checked)
             postSkipWaiting(newWorker);
     });
