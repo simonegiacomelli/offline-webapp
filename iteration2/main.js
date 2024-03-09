@@ -1,4 +1,6 @@
-const version = '11';
+const version = '3';
+
+document.getElementById('ver_main').innerHTML = version;
 
 function log(...data) {
     console.log(`main-${version}`, ...data);
@@ -50,8 +52,11 @@ function updateStatus() {
 }
 
 navigator.serviceWorker.addEventListener('message', event => {
-    log('message:', event.data.msg);
-    document.getElementById('swid').textContent = event.data.msg;
+    log('message:', JSON.stringify(event.data));
+    if (event.data.cmd === 'version')
+        document.getElementById('ver_sw').innerHTML = event.data.msg;
+
+
     if (event.data.msg === 'refresh-browser') {
         // window.location.reload();
     }

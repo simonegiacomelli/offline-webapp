@@ -1,9 +1,9 @@
-const version = '10';
+const version = '19';
 const expectedCache = `static-v${version}`
 const URLS_TO_CACHE = [
     '/',
     '/index.html',
-    'main.js'
+    '/main.js'
 ];
 
 function log(...data) {
@@ -20,6 +20,11 @@ self.addEventListener('install', event => {
         caches.open(expectedCache).then(cache => cache.addAll(URLS_TO_CACHE))
     );
 });
+
+function sendVersion() {
+    postMessageAll({cmd: 'version', msg: version});
+}
+
 
 self.addEventListener('activate', event => {
     let data = `activate`;
@@ -38,16 +43,17 @@ self.addEventListener('activate', event => {
 
     event.waitUntil(self.clients.claim());
     sendText(data);
-
+    sendVersion();
 });
 
 function sendText(msg) {
-    // log('sendText', msg);
+    postMessageAll({msg: msg});
+}
+
+function postMessageAll(msg) {
     self.clients.matchAll().then(clients => {
         clients.forEach(client => {
-            client.postMessage({
-                msg: msg
-            });
+            client.postMessage(msg);
         });
     });
 }
@@ -61,7 +67,7 @@ self.addEventListener('message', event => {
 });
 
 self.addEventListener('fetch', event => {
-
+    sendVersion();
 
     // if (url.origin == location.origin && url.pathname == '/dog.svg') {
     //   event.respondWith(caches.match('/horse.svg'));
