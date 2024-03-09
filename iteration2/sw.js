@@ -1,4 +1,4 @@
-const version = '6';
+const version = '12';
 const expectedCache = `static-v${version}`
 const URLS_TO_CACHE = [
     '/',

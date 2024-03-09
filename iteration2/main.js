@@ -1,4 +1,4 @@
-const version = '5';
+const version = '10';
 
 document.getElementById('ver_main').innerHTML = version;
 

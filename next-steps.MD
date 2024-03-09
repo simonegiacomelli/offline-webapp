@@ -3,6 +3,7 @@
   - after skipWaiting reload the page (the cache is already tied to the sw-version)
   - access the right information about online/offline
   - make evidence of the online/offline state
+  - button to fetch a resource in order to verify if the new worker is detected
 - read https://web.dev/articles/service-worker-lifecycle
 - send messages from SW to main
 - study the cache lifecycle 
