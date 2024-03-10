@@ -1,5 +1,7 @@
 - support for no-network scenarios
-  - better organize all
+  - intuitive cache invalidation strategy, e.g. based on the last-modified date
+    - we could create a cache.txt file with the last-modified date of the resources
+    - this file serves both to determine that the file is cached and to determine if the cache is outdated
   - access the right information about online/offline
   - make evidence of the online/offline state
   - button to fetch a resource in order to verify if the new worker is detected

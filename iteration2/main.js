@@ -1,4 +1,4 @@
-const version = '11';
+const version = '12';
 
 function log(...data) {
     console.log(`main-${version}`, ...data);

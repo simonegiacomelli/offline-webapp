@@ -1,4 +1,4 @@
-const version = '27';
+const version = '31';
 const expectedCache = `static-v${version}`
 const URLS_TO_CACHE = [
     '/',
@@ -70,20 +70,15 @@ self.addEventListener('message', event => {
 
 self.addEventListener('fetch', event => {
     sendVersion();
-
-    // if (url.origin == location.origin && url.pathname == '/dog.svg') {
-    //   event.respondWith(caches.match('/horse.svg'));
-    // }
-
-    //return cache if matches the URLS_TO_CACHE
-    event.respondWith(
-        caches.match(event.request).then(response => {
+    caches.open(expectedCache).then(cache => {
+        let match = cache.match(event.request).then(response => {
             if (response) {
                 log(`fetch-cache-found ${event.request.url}`);
                 return response;
             }
             log(`fetch-no-cache ${event.request.url}`);
             return fetch(event.request);
-        })
-    );
+        });
+        event.respondWith(match);
+    });
 });
