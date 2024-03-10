@@ -1,4 +1,4 @@
-const version = '21';
+const version = '24';
 const expectedCache = `static-v${version}`
 const URLS_TO_CACHE = [
     '/',
@@ -24,7 +24,7 @@ self.addEventListener('install', event => {
 });
 
 function sendVersion() {
-    postMessageAll({cmd: 'version', msg: version});
+    postMessageAll({cmd: 'sw_version', msg: version});
 }
 
 

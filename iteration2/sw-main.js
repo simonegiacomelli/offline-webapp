@@ -1,11 +1,11 @@
-export const version = '4';
+export const version = '6';
 
-export function handleServiceWorker(callerLog) {
+export function handleServiceWorker(commandsCallback) {
 
     function log(...data) {
         console.log(`sw-main-${version}`, ...data);
         let str = data.reduce((acc, val) => acc + ' ' + val, '');
-        callerLog(`sw-main-${version} ` + str + '\n');
+        commandsCallback({cmd: 'log', msg: `sw-main-${version} ` + str + '\n'});
     }
 
     function postSkipWaiting(worker) {
@@ -34,7 +34,7 @@ export function handleServiceWorker(callerLog) {
 
     navigator.serviceWorker.addEventListener('message', event => {
         log('message:', JSON.stringify(event.data));
-        if (event.data.cmd === 'version') document.getElementById('ver_sw').innerHTML = event.data.msg;
+        if (event.data.cmd === 'sw_version') commandsCallback(event.data);
         if (event.data.msg === 'refresh-browser') window.location.reload();
     });
 
