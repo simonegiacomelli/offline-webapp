@@ -42,7 +42,10 @@ navigator.serviceWorker.register('sw.js').then(reg => {
         newWorker.addEventListener('statechange', () => {
             log('statechange', newWorker.state);
             if (newWorker.state === 'activated') // refresh the page
+            {
+                log('statechange activated. Reloading page.');
                 window.location.reload();
+            }
         });
         if (cbSkipWaiting.checked)
             postSkipWaiting(newWorker);

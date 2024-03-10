@@ -1,4 +1,4 @@
-const version = '12';
+const version = '15';
 const expectedCache = `static-v${version}`
 const URLS_TO_CACHE = [
     '/',
@@ -15,6 +15,7 @@ log(self);
 
 self.addEventListener('install', event => {
     log(`install`);
+    // debugger;
     // self.skipWaiting();
     event.waitUntil(
         caches.open(expectedCache).then(cache => cache.addAll(URLS_TO_CACHE))
