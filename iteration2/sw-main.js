@@ -1,4 +1,4 @@
-export const version = '6';
+export const version = '7';
 
 export function handleServiceWorker(commandsCallback) {
 

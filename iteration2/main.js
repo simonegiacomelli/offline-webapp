@@ -8,6 +8,8 @@ function log(...data) {
 
 }
 
+document.getElementById('ver_main').innerHTML = version;
+
 import * as sw_main from './sw-main.js';
 
 sw_main.handleServiceWorker(obj => {
@@ -16,6 +18,7 @@ sw_main.handleServiceWorker(obj => {
     else if (obj.cmd === 'sw_version')
         document.getElementById('ver_sw').innerHTML = obj.msg
 });
-document.getElementById('ver_main').innerHTML = sw_main.version;
+
+document.getElementById('ver_sw_main').innerHTML = sw_main.version;
 
 log('handleServiceWorker() done.');
