@@ -1,4 +1,7 @@
-export const version = '8';
+import {enumerate_cache} from "./sw-shared.js";
+
+export const version = '12';
+import * as sw_shared from './sw-shared.js';
 
 export function handleServiceWorker(commandsCallback) {
 
@@ -8,13 +11,14 @@ export function handleServiceWorker(commandsCallback) {
         commandsCallback({cmd: 'log', msg: `sw-main-${version} ` + str + '\n'});
     }
 
-    function postSkipWaiting(worker) {
-        log('postSkipWaiting', worker);
-        worker.postMessage({msg: 'skip-waiting'});
+    function postTo(worker, cmd, msg) {
+        log('postTo', worker, cmd, msg);
+        worker.postMessage({cmd: cmd, msg: msg});
     }
 
-    navigator.serviceWorker.register('sw.js').then(reg => {
+    navigator.serviceWorker.register('sw.js', {type: 'module'}).then(reg => {
         log(`Service Worker Registered reg.scope=${reg.scope}  `);
+        if (reg.active) postTo(reg.active, sw_shared.enumerate_cache);
 
         reg.addEventListener('updatefound', () => {
             const newWorker = reg.installing;
@@ -27,7 +31,7 @@ export function handleServiceWorker(commandsCallback) {
                     window.location.reload();
                 }
             });
-            postSkipWaiting(newWorker);
+            postTo(newWorker, 'skip-waiting');
         });
 
     });
