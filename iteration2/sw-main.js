@@ -35,7 +35,6 @@ export function handleServiceWorker(callerLog) {
     navigator.serviceWorker.addEventListener('message', event => {
         log('message:', JSON.stringify(event.data));
         if (event.data.cmd === 'version') document.getElementById('ver_sw').innerHTML = event.data.msg;
-
         if (event.data.msg === 'refresh-browser') window.location.reload();
     });
 

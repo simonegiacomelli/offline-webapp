@@ -10,10 +10,7 @@ function log(...data) {
 
 import * as sw_main from './sw-main.js';
 
-sw_main.handleServiceWorker(line => {
-    document.getElementById('taLog').value += line
-});
-
+sw_main.handleServiceWorker(line => document.getElementById('taLog').value += line);
 document.getElementById('ver_main').innerHTML = sw_main.version;
 
 log('handleServiceWorker() done.');
