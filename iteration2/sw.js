@@ -1,9 +1,10 @@
-const version = '17';
+const version = '20';
 const expectedCache = `static-v${version}`
 const URLS_TO_CACHE = [
     '/',
     '/index.html',
-    '/main.js'
+    '/main.js',
+    '/sw-main.js',
 ];
 
 function log(...data) {
